@@ -1,27 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
     <title>Script Runner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <h1>Run Python Scripts</h1>
+  <body
+    class="bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center justify-start py-10"
+  >
+    <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-2xl">
+      <h1 class="text-3xl font-bold text-center mb-8">🚀 Script Runner</h1>
 
-    <form action="/scrape-quotes" method="post">
-      <button type="submit">Run Quote Scraper</button>
-    </form>
+      <div class="flex flex-col gap-4 mb-8">
+        <form action="/run-script/scrape" method="post">
+          <button
+            type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow"
+          >
+            Run Quote Scraper
+          </button>
+        </form>
 
-    <form action="/run-script/standalone" method="post">
-      <button type="submit">Run Standalone Script</button>
-    </form>
+        <form action="/run-script/standalone" method="post">
+          <button
+            type="submit"
+            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow"
+          >
+            Run Standalone Script
+          </button>
+        </form>
+      </div>
 
-    {% if script_name %}
-    <h2>Script: {{ script_name }}</h2>
-    {% endif %} {% if output %}
-    <h3>Output:</h3>
-    <pre>{{ output }}</pre>
-    {% endif %} {% if error %}
-    <h3 style="color: red">Error:</h3>
-    <pre>{{ error }}</pre>
-    {% endif %}
+      {% if script_name %}
+      <div class="mb-4">
+        <h2 class="text-xl font-semibold">
+          Script: <span class="text-indigo-600">{{ script_name }}</span>
+        </h2>
+      </div>
+      {% endif %} {% if output %}
+      <div class="mb-4">
+        <h3 class="font-semibold text-green-600 mb-2">✅ Output:</h3>
+        <pre
+          class="bg-gray-200 p-4 rounded overflow-x-auto whitespace-pre-wrap"
+        >
+{{ output }}</pre
+        >
+      </div>
+      {% endif %} {% if error %}
+      <div class="mb-4">
+        <h3 class="font-semibold text-red-600 mb-2">❌ Error:</h3>
+        <pre
+          class="bg-red-100 p-4 rounded overflow-x-auto whitespace-pre-wrap text-red-800"
+        >
+{{ error }}</pre
+        >
+      </div>
+      {% endif %}
+    </div>
   </body>
 </html>
