@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Script Runner</title>
+  </head>
+  <body>
+    <h1>Run Python Scripts</h1>
+
+    <form action="/scrape-quotes" method="post">
+      <button type="submit">Run Quote Scraper</button>
+    </form>
+
+    <form action="/run-script/standalone" method="post">
+      <button type="submit">Run Standalone Script</button>
+    </form>
+
+    {% if script_name %}
+    <h2>Script: {{ script_name }}</h2>
+    {% endif %} {% if output %}
+    <h3>Output:</h3>
+    <pre>{{ output }}</pre>
+    {% endif %} {% if error %}
+    <h3 style="color: red">Error:</h3>
+    <pre>{{ error }}</pre>
+    {% endif %}
+  </body>
+</html>
