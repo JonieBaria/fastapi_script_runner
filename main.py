@@ -49,7 +49,7 @@ def run_script(request: Request, script_name: str):
         })
 
 @app.post("/scrape-quotes")
-def scrape_quotes(request: Request):
+async def scrape_quotes(request: Request):
     try:
         script_path = os.path.join(os.path.dirname(__file__), "scrape_quotes.py")
 
@@ -60,26 +60,54 @@ def scrape_quotes(request: Request):
             timeout=30
         )
 
+        # Handle result
         if result.returncode != 0:
-            return JSONResponse(status_code=500, content={
-                "success": False,
-                "error": result.stderr.strip(),
-                "output": result.stdout.strip(),
+            error_message = result.stderr.strip()
+            output_message = result.stdout.strip()
+            if "application/json" in request.headers.get("accept", ""):
+                return JSONResponse(status_code=500, content={
+                    "success": False,
+                    "error": error_message,
+                    "output": output_message,
+                    "exit_code": result.returncode
+                })
+            return templates.TemplateResponse("index.html", {
+                "request": request,
+                "output": output_message,
+                "error": error_message,
+                "script_name": "Quote Scraper"
+            })
+
+        # Successful script execution
+        output_message = result.stdout.strip()
+        if "application/json" in request.headers.get("accept", ""):
+            return JSONResponse(content={
+                "success": True,
+                "output": output_message,
+                "error": "",
                 "exit_code": result.returncode
             })
 
-        return JSONResponse(content={
-            "success": True,
-            "output": result.stdout.strip(),
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "output": output_message,
             "error": "",
-            "exit_code": result.returncode
+            "script_name": "Quote Scraper"
         })
 
     except Exception as e:
-        return JSONResponse(status_code=500, content={
-            "success": False,
+        error_message = str(e)
+        if "application/json" in request.headers.get("accept", ""):
+            return JSONResponse(status_code=500, content={
+                "success": False,
+                "output": "",
+                "error": error_message
+            })
+        return templates.TemplateResponse("index.html", {
+            "request": request,
             "output": "",
-            "error": str(e)
+            "error": error_message,
+            "script_name": "Quote Scraper"
         })
 
 

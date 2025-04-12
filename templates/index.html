@@ -14,21 +14,22 @@
       <h1 class="text-3xl font-bold text-center mb-8">🚀 Script Runner</h1>
 
       <div class="flex flex-col gap-4 mb-8">
-        <form action="/run-script/scrape" method="post">
+        <form action="/scrape-quotes" method="post">
           <button
             type="submit"
             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow"
           >
-            Run Quote Scraper
+            Run Quote Scraper (Data from
+            <span class="font-bold italic">http://quotes.toscrape.com</span>)
           </button>
         </form>
-
         <form action="/run-script/standalone" method="post">
           <button
             type="submit"
             class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow"
           >
-            Run Standalone Script
+            Run Standalone Script (Data from a
+            <span class="font-bold italic">Basic Python File</span>)
           </button>
         </form>
       </div>
